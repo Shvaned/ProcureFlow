@@ -1,0 +1,21 @@
+from typing import AsyncGenerator
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
+from app.core.database import async_session_factory
+from app.core.config import settings
+
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_factory() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
+
+
+def get_settings():
+    return settings
