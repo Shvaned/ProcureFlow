@@ -1,7 +1,9 @@
 import uuid
-from sqlalchemy import String, Integer, Boolean, ForeignKey
+
+from sqlalchemy import Boolean, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.models.base import BaseEntity, SoftDeleteMixin
 
 

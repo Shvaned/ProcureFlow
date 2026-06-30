@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from app.schemas.common import StandardResponse
+
 from app.core.config import settings
+from app.schemas.common import StandardResponse
 
 router = APIRouter()
 

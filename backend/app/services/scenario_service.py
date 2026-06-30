@@ -1,16 +1,16 @@
 """Business Scenario Lab (Digital Twin) — sandboxed simulation, never modifies production data."""
-import uuid, random, json
+import json
+import uuid
 from datetime import datetime, timezone
-from decimal import Decimal
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from app.models.product.product import Product
+
 from app.models.inventory.inventory import Inventory
-from app.models.warehouse.warehouse import Warehouse
+from app.models.product.product import Product
 from app.models.supplier.supplier import Supplier
-from app.models.procurement.procurement import PurchaseOrder, POStatus
+from app.models.warehouse.warehouse import Warehouse
 from app.services.analytics_service import AnalyticsService
-from app.core.config import settings
 
 TEMPLATES = [
     {"name": "Demand Increase (20%)", "category": "demand", "params": {"demand_pct": 20}, "description": "Simulate 20% demand increase across all products"},
@@ -82,7 +82,6 @@ class ScenarioService:
         demand_pct = params.get("demand_pct", 0)
         if demand_pct:
             inv = baseline["inventory_value"]
-            change = inv * (demand_pct / 100)
             impact["inventory_value"] = {
                 "baseline": round(inv / 100000, 1),
                 "simulated": round((inv - (inv * abs(demand_pct) / 100 * 0.7)) / 100000, 1) if demand_pct > 0 else round((inv + inv * abs(demand_pct) / 100 * 0.3) / 100000, 1),

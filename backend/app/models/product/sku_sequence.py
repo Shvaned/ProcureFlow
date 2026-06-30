@@ -1,8 +1,7 @@
 """SKU Sequence model for auto-incrementing per category-brand combinations."""
-import uuid
-from sqlalchemy import String, Integer, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.models.base import BaseEntity
 
 

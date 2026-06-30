@@ -1,14 +1,21 @@
 import uuid
-from typing import Optional
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+
+from app.core.exceptions import BusinessRuleException, NotFoundException
 from app.models.inventory.inventory import (
-    Inventory, InventoryTransaction, StockTransfer, StockTransferItem,
-    StockAdjustment, StockReservation, TransactionType, TransferStatus, AdjustmentReason
+    AdjustmentReason,
+    Inventory,
+    InventoryTransaction,
+    StockAdjustment,
+    StockTransfer,
+    StockTransferItem,
+    TransactionType,
+    TransferStatus,
 )
-from app.models.warehouse.warehouse import Warehouse, WarehouseZone, WarehouseBin
-from app.repositories.base import BaseRepository, PaginationParams
-from app.core.exceptions import NotFoundException, ConflictException, ValidationException, BusinessRuleException
+from app.models.warehouse.warehouse import Warehouse, WarehouseZone
+from app.repositories.base import BaseRepository
 
 
 class InventoryService:
@@ -113,8 +120,8 @@ class TransferService:
         self.db = db
 
     async def create_transfer(self, data: dict, user_id: uuid.UUID) -> StockTransfer:
-        from datetime import datetime
         import secrets
+        from datetime import datetime
         transfer = StockTransfer(
             transfer_number=f"TRF-{datetime.now().strftime('%Y%m%d')}-{secrets.token_hex(3).upper()}",
             from_warehouse_id=uuid.UUID(data["from_warehouse_id"]),

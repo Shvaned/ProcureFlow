@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel, Field
-from typing import Optional
 
 
 class ReorderRecommendation(BaseModel):
@@ -10,7 +10,7 @@ class ReorderRecommendation(BaseModel):
     recommended_quantity: int
     urgency: str = Field(description="immediate/soon/planned")
     explanation: str
-    supplier_suggestion: Optional[str] = None
+    supplier_suggestion: str | None = None
     confidence: float = Field(ge=0, le=100)
 
 

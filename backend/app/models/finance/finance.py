@@ -1,11 +1,14 @@
+import enum
 import uuid
 from datetime import date
 from decimal import Decimal
-from sqlalchemy import String, Integer, Numeric, Date, Text, ForeignKey, Enum as SAEnum
+
+from sqlalchemy import Date, ForeignKey, Integer, Numeric, String, Text
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.base import BaseEntity, SoftDeleteMixin, AuditMixin
-import enum
+
+from app.models.base import AuditMixin, BaseEntity, SoftDeleteMixin
 
 
 class InvoiceStatus(str, enum.Enum):

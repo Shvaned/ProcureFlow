@@ -1,5 +1,4 @@
 """Prompt loading utilities."""
-import os
 from pathlib import Path
 
 _PROMPT_DIR = Path(__file__).parent

@@ -1,12 +1,14 @@
 """Workflow Automation API — CRUD, execution, simulation, approvals, templates, analytics."""
 import uuid
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.dependencies.providers import get_db
-from app.middleware.auth import get_current_user, RequirePermission
-from app.services.workflow_service import WorkflowService
+from app.middleware.auth import RequirePermission
 from app.models.identity.user import User
 from app.schemas.common import StandardResponse
+from app.services.workflow_service import WorkflowService
 
 router = APIRouter()
 

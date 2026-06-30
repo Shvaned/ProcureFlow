@@ -1,12 +1,12 @@
 """Business Scenario Lab API — sandboxed simulation, never modifies production data."""
-import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.dependencies.providers import get_db
-from app.middleware.auth import get_current_user, RequirePermission
-from app.services.scenario_service import ScenarioService
+from app.middleware.auth import RequirePermission
 from app.models.identity.user import User
 from app.schemas.common import StandardResponse
+from app.services.scenario_service import ScenarioService
 
 router = APIRouter()
 _scenario_svc: ScenarioService | None = None

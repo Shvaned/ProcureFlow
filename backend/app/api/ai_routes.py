@@ -1,19 +1,19 @@
 import json
 import time
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.ai.prompts import render_prompt
+from app.ai.services.ai_service import AIService
+from app.core.logging import get_logger
 from app.dependencies.providers import get_db
-from app.middleware.auth import get_current_user, RequirePermission
-from app.services.analytics_service import AnalyticsService
-from app.services.inventory_service import InventoryService
-from app.services.procurement_service import ProcurementService, SupplierService
+from app.middleware.auth import RequirePermission
 from app.models.identity.user import User
 from app.schemas.common import StandardResponse
-from app.ai.services.ai_service import AIService
-from app.ai.prompts import render_prompt
-from app.ai.schemas.executive import HealthScoreResponse, ChatResponse
-from app.ai.schemas.procurement import ReorderRecommendation, WhatIfScenario
-from app.core.logging import get_logger
+from app.services.analytics_service import AnalyticsService
+from app.services.inventory_service import InventoryService
+from app.services.procurement_service import SupplierService
 
 router = APIRouter()
 ai_service = AIService()
@@ -78,7 +78,7 @@ async def executive_brief(
 ):
     analytics = AnalyticsService(db)
     data = await analytics.get_executive_summary()
-    vars_context = {k: json.dumps(v) if isinstance(v, (dict, list)) else str(v) for k, v in data.items()}
+    vars_context = {k: json.dumps(v) if isinstance(v, dict | list) else str(v) for k, v in data.items()}
     explanation = await _ai_explain("executive_summary", vars_context,
         "Summarize the current state of the business. Highlight key metrics, trends, risks, and recommended actions.")
     return StandardResponse.ok(data={"metrics": data, "ai_summary": explanation})
@@ -91,7 +91,7 @@ async def health_score(
 ):
     analytics = AnalyticsService(db)
     data = await analytics.get_executive_summary()
-    vars_context = {k: json.dumps(v) if isinstance(v, (dict, list)) else str(v) for k, v in data.items()}
+    vars_context = {k: json.dumps(v) if isinstance(v, dict | list) else str(v) for k, v in data.items()}
     explanation = await _ai_explain("executive_summary", vars_context,
         "Assess overall business health on a scale of 0-100. Identify top 3 risks and top 3 opportunities.")
     return StandardResponse.ok(data={"metrics": data, "ai_analysis": explanation})
@@ -175,6 +175,7 @@ async def list_conversations(
 ):
     try:
         from sqlalchemy import select
+
         from app.models.ai.ai_models import AIConversation
         result = await db.execute(
             select(AIConversation).where(AIConversation.user_id == current_user.id)

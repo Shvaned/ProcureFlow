@@ -1,18 +1,18 @@
-from typing import Type
-from app.ai.tools.base import BaseTool, ToolDefinition, ToolResult
+
+from app.ai.tools.base import BaseTool, ToolDefinition
 
 
 class ToolRegistry:
     def __init__(self):
-        self._tools: dict[str, Type[BaseTool]] = {}
+        self._tools: dict[str, type[BaseTool]] = {}
 
-    def register(self, tool_class: Type[BaseTool]) -> None:
+    def register(self, tool_class: type[BaseTool]) -> None:
         self._tools[tool_class.definition.name] = tool_class
 
     def discover(self) -> list[ToolDefinition]:
         return [cls.definition for cls in self._tools.values()]
 
-    def get_tool(self, name: str) -> Type[BaseTool] | None:
+    def get_tool(self, name: str) -> type[BaseTool] | None:
         return self._tools.get(name)
 
     def list_by_domain(self, domain: str) -> list[ToolDefinition]:
@@ -33,25 +33,22 @@ tool_registry = ToolRegistry()
 
 def register_tools():
     """Auto-discover and register all tools."""
+    from app.ai.tools.analytics_tools import ComparePeriodsTool, TopProductsTool, TrendAnalysisTool
+    from app.ai.tools.executive_tools import BusinessHealthTool, KPISummaryTool, TopRisksTool
     from app.ai.tools.inventory_tools import (
-        GetInventorySummaryTool, GetLowStockProductsTool,
-        GetStockoutRiskTool, GetInventoryHistoryTool, GetExpiringStockTool,
-    )
-    from app.ai.tools.executive_tools import (
-        BusinessHealthTool, KPISummaryTool, TopRisksTool,
+        GetExpiringStockTool,
+        GetInventoryHistoryTool,
+        GetInventorySummaryTool,
+        GetLowStockProductsTool,
+        GetStockoutRiskTool,
     )
     from app.ai.tools.procurement_tools import (
-        PurchaseOrderSummaryTool, PendingApprovalsTool, ProcurementSpendTool,
+        PendingApprovalsTool,
+        ProcurementSpendTool,
+        PurchaseOrderSummaryTool,
     )
-    from app.ai.tools.supplier_tools import (
-        SupplierScorecardTool, SupplierPerformanceTool,
-    )
-    from app.ai.tools.warehouse_tools import (
-        WarehouseUtilizationTool, WarehouseSummaryTool,
-    )
-    from app.ai.tools.analytics_tools import (
-        TrendAnalysisTool, TopProductsTool, ComparePeriodsTool,
-    )
+    from app.ai.tools.supplier_tools import SupplierPerformanceTool, SupplierScorecardTool
+    from app.ai.tools.warehouse_tools import WarehouseSummaryTool, WarehouseUtilizationTool
 
     tools = [
         GetInventorySummaryTool, GetLowStockProductsTool, GetStockoutRiskTool,

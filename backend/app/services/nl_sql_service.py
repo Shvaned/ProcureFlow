@@ -1,10 +1,13 @@
 """NL→SQL Copilot Service — orchestrates intent → SQL → validation → execution → formatting."""
-import json, time
+import json
+import time
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.ai.services.ai_service import AIService
+
+from app.ai.nl_sql.query_executor import QueryExecutor, detect_chart_type
 from app.ai.nl_sql.schema_whitelist import get_schema_context
 from app.ai.nl_sql.sql_validator import SQLValidator
-from app.ai.nl_sql.query_executor import QueryExecutor, detect_chart_type
+from app.ai.services.ai_service import AIService
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)

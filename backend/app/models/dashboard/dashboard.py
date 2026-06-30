@@ -1,9 +1,11 @@
 import uuid
 from datetime import date
 from decimal import Decimal
-from sqlalchemy import Integer, String, Date, Numeric, JSON, ForeignKey
+
+from sqlalchemy import JSON, Date, ForeignKey, Integer, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.models.base import BaseEntity
 
 

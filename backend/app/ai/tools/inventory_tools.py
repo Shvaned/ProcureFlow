@@ -1,6 +1,6 @@
 from app.ai.tools.base import BaseTool, ToolDefinition, ToolResult
-from app.services.inventory_service import InventoryService
 from app.services.analytics_service import AnalyticsService
+from app.services.inventory_service import InventoryService
 
 
 class GetInventorySummaryTool(BaseTool):
@@ -53,6 +53,7 @@ class GetStockoutRiskTool(BaseTool):
 
     async def execute(self, **kwargs) -> ToolResult:
         from sqlalchemy import select
+
         from app.models.inventory.inventory import Inventory
         items = (await self.db.execute(
             select(Inventory).where(Inventory.available_quantity.between(1, 50)).limit(20)

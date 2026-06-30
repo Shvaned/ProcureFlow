@@ -1,16 +1,17 @@
 from fastapi import APIRouter
-from app.api.health import router as health_router
+
+from app.api.ai_routes import router as ai_router
+from app.api.analytics import router as analytics_router
 from app.api.auth import router as auth_router
-from app.api.products import router as products_router
+from app.api.health import router as health_router
 from app.api.inventory import router as inventory_router
 from app.api.procurement import router as procurement_router
-from app.api.analytics import router as analytics_router
-from app.api.simulation import router as simulation_router
-from app.api.ai_routes import router as ai_router
-from app.api.workflows import router as workflows_router
-from app.api.supplier_intelligence import router as supplier_intel_router
+from app.api.products import router as products_router
 from app.api.scenarios import router as scenarios_router
+from app.api.simulation import router as simulation_router
 from app.api.sku import router as sku_router
+from app.api.supplier_intelligence import router as supplier_intel_router
+from app.api.workflows import router as workflows_router
 
 api_router = APIRouter()
 

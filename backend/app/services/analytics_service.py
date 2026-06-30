@@ -1,13 +1,14 @@
 import uuid
-from datetime import date, datetime, timedelta
 from decimal import Decimal
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, case
-from app.models.product.product import Product, Category, Brand
+
 from app.models.inventory.inventory import Inventory, InventoryTransaction
-from app.models.warehouse.warehouse import Warehouse
+from app.models.procurement.procurement import POStatus, PurchaseOrder
+from app.models.product.product import Brand, Category, Product
 from app.models.supplier.supplier import Supplier
-from app.models.procurement.procurement import PurchaseOrder, POStatus
+from app.models.warehouse.warehouse import Warehouse
 
 
 class AnalyticsService:

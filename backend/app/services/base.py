@@ -1,9 +1,12 @@
-from typing import Any, Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 from uuid import UUID
-from pydantic import BaseModel
+
 from app.repositories.base import (
-    BaseRepository, FilterCondition, SortParam,
-    PaginationParams, PaginatedResult
+    BaseRepository,
+    FilterCondition,
+    PaginatedResult,
+    PaginationParams,
+    SortParam,
 )
 
 T = TypeVar("T")

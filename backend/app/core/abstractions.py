@@ -1,12 +1,12 @@
 """Abstraction interfaces for cache, storage, email, and background tasks."""
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 
 class CacheProvider(ABC):
     @abstractmethod
-    async def get(self, key: str) -> Optional[Any]: ...
+    async def get(self, key: str) -> Any | None: ...
     @abstractmethod
     async def set(self, key: str, value: Any, ttl_seconds: int = 300) -> None: ...
     @abstractmethod
@@ -21,7 +21,7 @@ class MemoryCache(CacheProvider):
     def __init__(self):
         self._store: dict[str, Any] = {}
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         return self._store.get(key)
 
     async def set(self, key: str, value: Any, ttl_seconds: int = 300) -> None:
@@ -41,7 +41,7 @@ class StorageProvider(ABC):
     @abstractmethod
     async def upload(self, file_path: str, content: bytes, content_type: str = "application/octet-stream") -> str: ...
     @abstractmethod
-    async def download(self, file_path: str) -> Optional[bytes]: ...
+    async def download(self, file_path: str) -> bytes | None: ...
     @abstractmethod
     async def delete(self, file_path: str) -> bool: ...
     @abstractmethod
@@ -64,7 +64,7 @@ class LocalStorageProvider(StorageProvider):
             f.write(content)
         return file_path
 
-    async def download(self, file_path: str) -> Optional[bytes]:
+    async def download(self, file_path: str) -> bytes | None:
         import os
         full_path = os.path.join(self.base_path, file_path)
         if not os.path.exists(full_path):
@@ -90,11 +90,11 @@ class LocalStorageProvider(StorageProvider):
 
 class EmailProvider(ABC):
     @abstractmethod
-    async def send(self, to: str, subject: str, body: str, html_body: Optional[str] = None) -> bool: ...
+    async def send(self, to: str, subject: str, body: str, html_body: str | None = None) -> bool: ...
 
 
 class LoggingEmailProvider(EmailProvider):
-    async def send(self, to: str, subject: str, body: str, html_body: Optional[str] = None) -> bool:
+    async def send(self, to: str, subject: str, body: str, html_body: str | None = None) -> bool:
         import logging
         logger = logging.getLogger(__name__)
         logger.info(f"[EMAIL] To: {to}, Subject: {subject}, Body: {body[:200]}...")

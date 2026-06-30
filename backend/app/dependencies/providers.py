@@ -1,8 +1,9 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
-from app.core.database import async_session_factory
+
 from app.core.config import settings
+from app.core.database import async_session_factory
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

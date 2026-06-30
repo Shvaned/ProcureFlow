@@ -1,7 +1,9 @@
 import secrets
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
+
 from app.core.exceptions import AuthorizationException
 
 SAFE_METHODS = {"GET", "HEAD", "OPTIONS"}
