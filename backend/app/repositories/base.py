@@ -1,9 +1,10 @@
-from typing import Any, Generic, Optional, TypeVar, Sequence, Callable
+from typing import Any, Generic, TypeVar
 from uuid import UUID
-from sqlalchemy import select, func, delete, update, and_, or_, text
+
+from pydantic import BaseModel
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
-from pydantic import BaseModel
 
 T = TypeVar("T", bound=DeclarativeBase)
 

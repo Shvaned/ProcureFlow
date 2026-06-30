@@ -38,6 +38,7 @@ class SupplierPerformanceTool(BaseTool):
 
     async def execute(self, **kwargs) -> ToolResult:
         from sqlalchemy import select
+
         from app.models.supplier.supplier import Supplier
         suppliers = (await self.db.execute(
             select(Supplier).order_by(Supplier.rating.desc()).limit(10)

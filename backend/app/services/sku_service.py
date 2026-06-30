@@ -1,11 +1,13 @@
 """SKU Generation Service — enterprise-grade auto-SKU with manual override."""
-import uuid, re
+import re
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update
-from app.models.product.sku_sequence import SKUSequence
-from app.models.product.product import Product
-from app.core.exceptions import ValidationException, ConflictException, BusinessRuleException
+
+from app.core.exceptions import ConflictException
 from app.core.logging import get_logger
+from app.models.product.product import Product
+from app.models.product.sku_sequence import SKUSequence
 
 logger = get_logger(__name__)
 

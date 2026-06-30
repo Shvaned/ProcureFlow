@@ -1,6 +1,6 @@
-from pydantic_settings import BaseSettings
+
 from pydantic import field_validator
-from typing import Optional
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    OPENROUTER_API_KEY: Optional[str] = None
+    OPENROUTER_API_KEY: str | None = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     AI_DEFAULT_MODEL: str = "openai/gpt-4o"
     AI_FALLBACK_MODEL: str = "anthropic/claude-sonnet-4"

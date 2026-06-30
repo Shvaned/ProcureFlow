@@ -1,8 +1,9 @@
 """Seed default roles and permissions."""
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.models.identity.user import Role, Permission, User
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.security import hash_password
+from app.models.identity.user import Permission, Role, User
 
 DEFAULT_PERMISSIONS = [
     ("Users.Read", "View users", "Users"),

@@ -1,10 +1,13 @@
+import enum
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Integer, Boolean, Text, DateTime, ForeignKey, JSON, Enum as SAEnum
+
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.base import BaseEntity, SoftDeleteMixin, AuditMixin
-import enum
+
+from app.models.base import AuditMixin, BaseEntity, SoftDeleteMixin
 
 
 class WorkflowStatus(str, enum.Enum):

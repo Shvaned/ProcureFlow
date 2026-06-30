@@ -1,22 +1,23 @@
 import uuid
 from decimal import Decimal
-from typing import Optional
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
-from app.repositories.base import BaseRepository, FilterCondition, FilterOperator, SortParam, PaginationParams
-from app.models.product.product import Product, Category, Brand, Unit, ProductImage, ProductDocument
-from app.core.exceptions import NotFoundException, ConflictException, ValidationException
+
+from app.core.exceptions import ConflictException, NotFoundException, ValidationException
+from app.models.product.product import Brand, Category, Product, Unit
+from app.repositories.base import BaseRepository
 
 
 class ProductRepository(BaseRepository[Product]):
     model = Product
 
-    async def get_by_sku(self, sku: str) -> Optional[Product]:
+    async def get_by_sku(self, sku: str) -> Product | None:
         result = await self.db.execute(select(Product).where(Product.sku == sku))
         return result.scalar_one_or_none()
 
-    async def get_by_barcode(self, barcode: str) -> Optional[Product]:
+    async def get_by_barcode(self, barcode: str) -> Product | None:
         result = await self.db.execute(select(Product).where(Product.barcode == barcode))
         return result.scalar_one_or_none()
 

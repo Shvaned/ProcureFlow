@@ -1,16 +1,28 @@
 import uuid
 from datetime import datetime, timezone
-from typing import Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token, decode_token
+
 from app.core.exceptions import (
-    AuthenticationException, AuthorizationException,
-    NotFoundException, ConflictException, ValidationException, BusinessRuleException
+    AuthenticationException,
+    ConflictException,
+    NotFoundException,
+    ValidationException,
 )
-from app.models.identity.user import User, UserSession, Role, Permission
+from app.core.security import (
+    create_access_token,
+    create_refresh_token,
+    decode_token,
+    hash_password,
+    verify_password,
+)
+from app.models.identity.user import Role, User, UserSession
 from app.schemas.auth import (
-    LoginResponse, UserCreateRequest, UserUpdateRequest, UserResponse,
-    RoleCreateRequest, RoleUpdateRequest, RoleResponse, PermissionResponse,
+    LoginResponse,
+    RoleResponse,
+    UserCreateRequest,
+    UserResponse,
+    UserUpdateRequest,
 )
 
 
@@ -84,7 +96,7 @@ class AuthService:
         )
 
     async def logout(self, user_id: uuid.UUID, refresh_token: str | None = None) -> None:
-        from sqlalchemy import select, update
+        from sqlalchemy import update
         if refresh_token:
             await self.db.execute(
                 update(UserSession)
@@ -108,7 +120,7 @@ class AuthService:
         result = await self.db.execute(
             select(UserSession).where(
                 UserSession.refresh_token == refresh_token,
-                UserSession.is_revoked == False,
+                UserSession.is_revoked.is_(False),
             )
         )
         session = result.scalar_one_or_none()

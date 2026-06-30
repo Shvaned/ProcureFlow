@@ -1,12 +1,14 @@
 import uuid
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.dependencies.providers import get_db
-from app.middleware.auth import get_current_user, RequirePermission
-from app.services.product_service import ProductService, CategoryService, BrandService, UnitService
+from app.middleware.auth import RequirePermission
 from app.models.identity.user import User
+from app.repositories.base import FilterCondition, PaginationParams, SortParam
 from app.schemas.common import StandardResponse
-from app.repositories.base import FilterCondition, FilterOperator, SortParam, PaginationParams
+from app.services.product_service import BrandService, CategoryService, ProductService, UnitService
 
 router = APIRouter()
 

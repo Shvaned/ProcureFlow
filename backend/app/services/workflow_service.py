@@ -1,13 +1,19 @@
 """Workflow Engine — deterministic execution, approvals, audit trail."""
 import uuid
 from datetime import datetime, timezone
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from app.models.automation.automation import (
-    Workflow, WorkflowExecution, WorkflowHistory, WorkflowStatus, ExecutionStatus,
-)
-from app.core.exceptions import NotFoundException, BusinessRuleException, AuthorizationException
+
+from app.core.exceptions import BusinessRuleException, NotFoundException
 from app.core.logging import get_logger
+from app.models.automation.automation import (
+    ExecutionStatus,
+    Workflow,
+    WorkflowExecution,
+    WorkflowHistory,
+    WorkflowStatus,
+)
 
 logger = get_logger(__name__)
 
@@ -89,8 +95,10 @@ class WorkflowService:
         steps = []
         definition = wf.flow_definition or {}
         if isinstance(definition, str):
-            try: definition = json.loads(definition)
-            except: definition = {}
+            try:
+                definition = json.loads(definition)
+            except json.JSONDecodeError:
+                definition = {}
 
         nodes = definition.get("nodes", [{"type": "start"}, {"type": "check_inventory"},
                                           {"type": "evaluate_condition"}, {"type": "send_notification"},
@@ -129,8 +137,10 @@ class WorkflowService:
         import json
         definition = wf.flow_definition or {}
         if isinstance(definition, str):
-            try: definition = json.loads(definition)
-            except: definition = {}
+            try:
+                definition = json.loads(definition)
+            except json.JSONDecodeError:
+                definition = {}
 
         steps_executed = []
         for i, node in enumerate(definition.get("nodes", [])):

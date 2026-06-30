@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel, Field
-from typing import Optional
 
 
 class RiskItem(BaseModel):
@@ -23,7 +23,7 @@ class ActionItem(BaseModel):
     action: str
     reason: str
     urgency: str = Field(description="immediate/today/week/month")
-    link: Optional[str] = None
+    link: str | None = None
 
 
 class ExecutiveSummary(BaseModel):

@@ -1,5 +1,7 @@
-from typing import Any, Optional
+from typing import Any
+
 from pydantic import BaseModel, ValidationError
+
 from app.core.exceptions import ValidationException
 
 
@@ -35,7 +37,7 @@ class BusinessValidator:
             raise ValidationException(f"A record with this {field_name} already exists")
 
     @staticmethod
-    def validate_pydantic(model: BaseModel) -> Optional[list[str]]:
+    def validate_pydantic(model: BaseModel) -> list[str] | None:
         try:
             model.model_validate(model)
             return None

@@ -30,7 +30,8 @@ class WarehouseUtilizationTool(BaseTool):
         self.db = db
 
     async def execute(self, **kwargs) -> ToolResult:
-        from sqlalchemy import select, func
+        from sqlalchemy import func, select
+
         from app.models.inventory.inventory import Inventory
         rows = (await self.db.execute(
             select(Inventory.warehouse_id, func.count(Inventory.id), func.sum(Inventory.available_quantity))

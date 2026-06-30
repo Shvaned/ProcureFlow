@@ -1,8 +1,9 @@
 import uuid
-from datetime import datetime
-from sqlalchemy import String, Integer, Float, Text, DateTime, Boolean, ForeignKey, JSON
+
+from sqlalchemy import JSON, Boolean, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import BaseEntity
 
 

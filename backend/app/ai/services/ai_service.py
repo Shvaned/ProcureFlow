@@ -1,6 +1,8 @@
 import json
-from typing import Any, Optional
+from typing import Any
+
 from pydantic import BaseModel
+
 from app.ai.providers.openrouter import OpenRouterProvider
 from app.core.logging import get_logger
 

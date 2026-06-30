@@ -1,9 +1,11 @@
 import uuid
 from decimal import Decimal
-from sqlalchemy import String, Boolean, Integer, Numeric, Text, ForeignKey
+
+from sqlalchemy import Boolean, ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.base import BaseEntity, SoftDeleteMixin, AuditMixin
+
+from app.models.base import AuditMixin, BaseEntity, SoftDeleteMixin
 
 
 class Category(BaseEntity, SoftDeleteMixin, AuditMixin):

@@ -1,5 +1,4 @@
 from app.ai.tools.base import BaseTool, ToolDefinition, ToolResult
-from app.services.procurement_service import ProcurementService
 from app.services.analytics_service import AnalyticsService
 
 
@@ -32,7 +31,8 @@ class PendingApprovalsTool(BaseTool):
 
     async def execute(self, **kwargs) -> ToolResult:
         from sqlalchemy import select
-        from app.models.procurement.procurement import PurchaseOrder, POStatus
+
+        from app.models.procurement.procurement import POStatus, PurchaseOrder
         pos = (await self.db.execute(
             select(PurchaseOrder).where(PurchaseOrder.status == POStatus.DRAFT).limit(20)
         )).scalars().all()

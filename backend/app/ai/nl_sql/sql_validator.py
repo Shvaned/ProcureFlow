@@ -1,6 +1,7 @@
 """SQL validation — ensures only safe SELECT queries against whitelisted tables."""
 import re
-from app.ai.nl_sql.schema_whitelist import ALLOWED_TABLES, UNSAFE_KEYWORDS, validate_table, validate_column
+
+from app.ai.nl_sql.schema_whitelist import UNSAFE_KEYWORDS, validate_table
 
 
 class SQLValidationResult:

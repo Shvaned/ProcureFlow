@@ -1,9 +1,10 @@
 import uuid
-from decimal import Decimal
-from sqlalchemy import String, Boolean, Text, Integer, Numeric, Float, ForeignKey
+
+from sqlalchemy import Boolean, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.base import BaseEntity, SoftDeleteMixin, AuditMixin
+
+from app.models.base import AuditMixin, BaseEntity, SoftDeleteMixin
 
 
 class Supplier(BaseEntity, SoftDeleteMixin, AuditMixin):

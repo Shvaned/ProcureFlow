@@ -1,7 +1,9 @@
 """Read-only SQL executor with timeout and row limits."""
 import time
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
@@ -31,7 +33,7 @@ class QueryExecutor:
             raw = await self.db.execute(text(safe_sql))
             if raw.returns_rows:
                 result.columns = list(raw.keys())
-                result.rows = [dict(zip(raw.keys(), row)) for row in raw.fetchall()]
+                result.rows = [dict(zip(raw.keys(), row, strict=False)) for row in raw.fetchall()]
                 result.row_count = len(result.rows)
             await self.db.commit()
         except Exception as e:
@@ -48,7 +50,7 @@ def detect_chart_type(columns: list[str], rows: list[dict]) -> str:
     if len(rows) == 1:
         return "kpi_card"
     if len(columns) >= 2:
-        numeric_cols = [c for c in columns[1:] if rows[0].get(c) is not None and isinstance(rows[0].get(c), (int, float))]
+        numeric_cols = [c for c in columns[1:] if rows[0].get(c) is not None and isinstance(rows[0].get(c), int | float)]
         if len(columns) == 2 and numeric_cols:
             if len(rows) <= 10:
                 return "bar"

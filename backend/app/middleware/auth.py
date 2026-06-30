@@ -1,21 +1,22 @@
 import uuid
-from typing import Optional
+
 from fastapi import Depends, Request
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from app.core.security import decode_token
+
 from app.core.exceptions import AuthenticationException, AuthorizationException
-from app.models.identity.user import User, Role, Permission
+from app.core.security import decode_token
 from app.dependencies.providers import get_db
+from app.models.identity.user import Role, User
 
 security = HTTPBearer(auto_error=False)
 
 
 async def get_current_user(
     request: Request,
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
     db: AsyncSession = Depends(get_db),
 ) -> User:
     if not credentials:

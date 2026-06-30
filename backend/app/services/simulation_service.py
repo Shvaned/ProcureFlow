@@ -1,15 +1,15 @@
 import random
-import uuid
-from datetime import datetime, timezone, date, timedelta
-from decimal import Decimal
+from datetime import datetime, timezone
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from app.models.product.product import Product
-from app.models.warehouse.warehouse import Warehouse, WarehouseZone, WarehouseBin
-from app.models.supplier.supplier import Supplier
-from app.models.procurement.procurement import PurchaseOrder, PurchaseOrderItem, POStatus
-from app.models.inventory.inventory import Inventory, InventoryTransaction, TransactionType, StockTransfer, TransferStatus
+
 from app.core.logging import get_logger
+from app.models.inventory.inventory import Inventory, StockTransfer, TransactionType, TransferStatus
+from app.models.procurement.procurement import POStatus, PurchaseOrder, PurchaseOrderItem
+from app.models.product.product import Product
+from app.models.supplier.supplier import Supplier
+from app.models.warehouse.warehouse import Warehouse
 
 logger = get_logger(__name__)
 
@@ -77,7 +77,7 @@ class SimulationService:
 
     async def _handle_customer_order(self) -> dict:
         products = (await self.db.execute(
-            select(Product).where(Product.is_active == True).limit(100)
+            select(Product).where(Product.is_active).limit(100)
         )).scalars().all()
         if not products:
             return {"description": "No products available"}
@@ -107,7 +107,7 @@ class SimulationService:
 
     async def _handle_purchase_request(self) -> dict:
         products = (await self.db.execute(
-            select(Product).where(Product.is_active == True, Product.reorder_level.is_not(None)).limit(50)
+            select(Product).where(Product.is_active, Product.reorder_level.is_not(None)).limit(50)
         )).scalars().all()
         if not products:
             return {"description": "No products with reorder levels"}
@@ -130,7 +130,6 @@ class SimulationService:
             select(Inventory).where(Inventory.warehouse_id == from_wh.id, Inventory.available_quantity > 5).limit(10)
         )).scalars().all()
         if inventories:
-            inv = random.choice(inventories)
             try:
                 transfer = StockTransfer(
                     transfer_number=f"SIM-{datetime.now().strftime('%Y%m%d%H%M%S')}-{random.randint(100, 999)}",
@@ -154,7 +153,7 @@ class SimulationService:
 
     async def _handle_demand_spike(self) -> dict:
         products = (await self.db.execute(
-            select(Product).where(Product.is_active == True).limit(50)
+            select(Product).where(Product.is_active).limit(50)
         )).scalars().all()
         if not products:
             return {"description": "No products"}
@@ -173,7 +172,7 @@ class SimulationService:
 
     async def _handle_emergency_purchase(self) -> dict:
         products = (await self.db.execute(
-            select(Product).where(Product.is_active == True).limit(20)
+            select(Product).where(Product.is_active).limit(20)
         )).scalars().all()
         if not products:
             return {"description": "No products"}
@@ -250,7 +249,7 @@ class SimulationService:
 
     async def _handle_price_change(self) -> dict:
         products = (await self.db.execute(
-            select(Product).where(Product.is_active == True).limit(30)
+            select(Product).where(Product.is_active).limit(30)
         )).scalars().all()
         if not products:
             return {"description": "No products"}

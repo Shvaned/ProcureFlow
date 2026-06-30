@@ -1,11 +1,12 @@
 """Supplier Intelligence — comparison, scoring, risk, recommendations."""
 import uuid
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-from app.models.supplier.supplier import Supplier, SupplierPerformance
-from app.models.procurement.procurement import PurchaseOrder, POStatus
-from app.services.analytics_service import AnalyticsService
+
 from app.core.exceptions import NotFoundException
+from app.models.procurement.procurement import POStatus, PurchaseOrder
+from app.models.supplier.supplier import Supplier, SupplierPerformance
 
 
 class SupplierIntelligenceService:
@@ -102,7 +103,7 @@ class SupplierIntelligenceService:
                                "mitigation": "Review supplier relationship and set improvement targets"})
         else:
             # Global risk scan
-            suppliers = (await self.db.execute(select(Supplier).where(Supplier.is_active == True))).scalars().all()
+            suppliers = (await self.db.execute(select(Supplier).where(Supplier.is_active))).scalars().all()
             for s in suppliers:
                 perf = await self._get_performance(s.id)
                 if perf.get("on_time_delivery_pct", 100) < 70:
@@ -191,11 +192,18 @@ class SupplierIntelligenceService:
 
     def _assess_risk_level(self, supplier: Supplier, perf: dict, pos: list) -> str:
         score = 0
-        if perf.get("on_time_delivery_pct", 100) < 80: score += 1
-        if perf.get("quality_rating", 5) < 3.0: score += 1
-        if supplier.rating < 1.5: score += 1
-        if perf.get("late_deliveries_count", 0) > 5: score += 1
-        if score >= 3: return "critical"
-        if score >= 2: return "high"
-        if score >= 1: return "medium"
+        if perf.get("on_time_delivery_pct", 100) < 80:
+            score += 1
+        if perf.get("quality_rating", 5) < 3.0:
+            score += 1
+        if supplier.rating < 1.5:
+            score += 1
+        if perf.get("late_deliveries_count", 0) > 5:
+            score += 1
+        if score >= 3:
+            return "critical"
+        if score >= 2:
+            return "high"
+        if score >= 1:
+            return "medium"
         return "low"

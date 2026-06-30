@@ -1,9 +1,11 @@
 import uuid
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from app.models.identity.user import Role, Permission
-from app.core.exceptions import NotFoundException, ConflictException
+
+from app.core.exceptions import ConflictException, NotFoundException
+from app.models.identity.user import Permission, Role
 from app.schemas.auth import RoleCreateRequest, RoleUpdateRequest
 
 

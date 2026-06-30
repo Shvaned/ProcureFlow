@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
+
+from pydantic import BaseModel, Field
 
 
 class LoginRequest(BaseModel):
@@ -46,9 +46,9 @@ class UserCreateRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    name: Optional[str] = None
-    is_active: Optional[bool] = None
-    role_ids: Optional[list[str]] = None
+    name: str | None = None
+    is_active: bool | None = None
+    role_ids: list[str] | None = None
 
 
 class UserResponse(BaseModel):
@@ -63,20 +63,20 @@ class UserResponse(BaseModel):
 
 class RoleCreateRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
-    description: Optional[str] = None
+    description: str | None = None
     permission_ids: list[str] = Field(default_factory=list)
 
 
 class RoleUpdateRequest(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    permission_ids: Optional[list[str]] = None
+    name: str | None = None
+    description: str | None = None
+    permission_ids: list[str] | None = None
 
 
 class RoleResponse(BaseModel):
     id: str
     name: str
-    description: Optional[str]
+    description: str | None
     is_system: bool
     permissions: list["PermissionResponse"] = Field(default_factory=list)
 
@@ -84,5 +84,5 @@ class RoleResponse(BaseModel):
 class PermissionResponse(BaseModel):
     id: str
     name: str
-    description: Optional[str]
+    description: str | None
     group: str

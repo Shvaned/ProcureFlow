@@ -1,9 +1,11 @@
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import String, Boolean, DateTime, ForeignKey, Table, Column, Integer
+
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Table
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.models.base import BaseEntity, SoftDeleteMixin, AuditMixin
+
+from app.models.base import AuditMixin, BaseEntity, SoftDeleteMixin
 
 user_roles = Table(
     "user_roles", BaseEntity.metadata,
