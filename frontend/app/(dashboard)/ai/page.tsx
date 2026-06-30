@@ -4,11 +4,36 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, BarChart3, ShoppingCart, Truck, Zap } from "lucide-react";
 
 const modules = [
-  { label: "Executive Copilot", href: "/ai/executive", icon: Sparkles, desc: "Daily briefs, health score, risk detection" },
-  { label: "Procurement Copilot", href: "/ai/procurement", icon: ShoppingCart, desc: "Reorder recommendations, supplier comparison" },
-  { label: "Supplier Intelligence", href: "/ai/suppliers", icon: Truck, desc: "Quotation analysis, supplier scorecards" },
-  { label: "Analytics Assistant", href: "/ai/analytics", icon: BarChart3, desc: "Natural language analytics & charts" },
-  { label: "Automation Studio", href: "/ai/automation", icon: Zap, desc: "Visual workflow builder & automation" },
+  {
+    label: "Executive Copilot",
+    href: "/ai/executive",
+    icon: Sparkles,
+    desc: "Daily briefs, health score, risk detection",
+  },
+  {
+    label: "Procurement Copilot",
+    href: "/ai/procurement",
+    icon: ShoppingCart,
+    desc: "Reorder recommendations, supplier comparison",
+  },
+  {
+    label: "Supplier Intelligence",
+    href: "/ai/suppliers",
+    icon: Truck,
+    desc: "Quotation analysis, supplier scorecards",
+  },
+  {
+    label: "Analytics Assistant",
+    href: "/ai/analytics",
+    icon: BarChart3,
+    desc: "Natural language analytics & charts",
+  },
+  {
+    label: "Automation Studio",
+    href: "/ai/automation",
+    icon: Zap,
+    desc: "Visual workflow builder & automation",
+  },
 ];
 
 export default function AIWorkspacePage() {

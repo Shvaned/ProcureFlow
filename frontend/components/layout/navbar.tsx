@@ -14,12 +14,11 @@ export function Navbar() {
       <div className="flex items-center gap-3">
         <button
           className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
-          onClick={() => {}}>
+          onClick={() => {}}
+        >
           <Search className="h-4 w-4" />
           <span className="hidden md:inline">Search...</span>
-          <kbd className="ml-8 hidden rounded border px-1.5 py-0.5 text-xs md:inline">
-            ⌘K
-          </kbd>
+          <kbd className="ml-8 hidden rounded border px-1.5 py-0.5 text-xs md:inline">⌘K</kbd>
         </button>
         <button className="relative rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground">
           <Bell className="h-4 w-4" />
