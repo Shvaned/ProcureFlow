@@ -33,10 +33,7 @@ export function Modal({ open, onClose, title, description, children, className }
       onClick={(e) => e.target === overlayRef.current && onClose()}
     >
       <div
-        className={cn(
-          "w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg",
-          className
-        )}
+        className={cn("w-full max-w-lg rounded-lg border bg-card p-6 shadow-lg", className)}
         role="dialog"
         aria-modal="true"
         aria-label={title}
@@ -46,11 +43,7 @@ export function Modal({ open, onClose, title, description, children, className }
             {title && <h2 className="text-lg font-semibold">{title}</h2>}
             {description && <p className="text-sm text-muted-foreground">{description}</p>}
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-md p-1 hover:bg-muted"
-            aria-label="Close"
-          >
+          <button onClick={onClose} className="rounded-md p-1 hover:bg-muted" aria-label="Close">
             <X className="h-4 w-4" />
           </button>
         </div>

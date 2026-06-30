@@ -8,9 +8,14 @@ import { Navbar } from "@/components/layout/navbar";
 import { apiClient } from "@/services/api-client";
 
 interface ExecData {
-  total_products: number; total_suppliers: number; total_warehouses: number;
-  total_inventory_value: number; open_purchase_orders: number;
-  pending_approvals: number; low_stock_items: number; out_of_stock_items: number;
+  total_products: number;
+  total_suppliers: number;
+  total_warehouses: number;
+  total_inventory_value: number;
+  open_purchase_orders: number;
+  pending_approvals: number;
+  low_stock_items: number;
+  out_of_stock_items: number;
 }
 
 export default function Home() {
@@ -20,23 +25,26 @@ export default function Home() {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    apiClient.get<{ data: ExecData }>("/api/v1/analytics/executive")
+    apiClient
+      .get<{ data: ExecData }>("/api/v1/analytics/executive")
       .then((r) => setData(r.data))
       .catch(() => setError("Could not load dashboard data"));
   }, [isAuthenticated]);
 
   if (!isAuthenticated) return <LandingPage />;
 
-  const cards = data ? [
-    { label: "Inventory Value", value: `₹${data.total_inventory_value.toLocaleString()}` },
-    { label: "Open POs", value: data.open_purchase_orders.toString() },
-    { label: "Suppliers", value: data.total_suppliers.toString() },
-    { label: "Warehouses", value: data.total_warehouses.toString() },
-    { label: "Products", value: data.total_products.toString() },
-    { label: "Pending Approvals", value: data.pending_approvals.toString() },
-    { label: "Low Stock Items", value: data.low_stock_items.toString() },
-    { label: "Out of Stock", value: data.out_of_stock_items.toString() },
-  ] : [];
+  const cards = data
+    ? [
+        { label: "Inventory Value", value: `₹${data.total_inventory_value.toLocaleString()}` },
+        { label: "Open POs", value: data.open_purchase_orders.toString() },
+        { label: "Suppliers", value: data.total_suppliers.toString() },
+        { label: "Warehouses", value: data.total_warehouses.toString() },
+        { label: "Products", value: data.total_products.toString() },
+        { label: "Pending Approvals", value: data.pending_approvals.toString() },
+        { label: "Low Stock Items", value: data.low_stock_items.toString() },
+        { label: "Out of Stock", value: data.out_of_stock_items.toString() },
+      ]
+    : [];
 
   return (
     <div className="flex min-h-screen">
@@ -49,7 +57,11 @@ export default function Home() {
               <h1 className="text-2xl font-bold">Dashboard</h1>
               <p className="text-muted-foreground">Welcome to ProcureFlow AI</p>
             </div>
-            {error && <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
+            {error && (
+              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+                {error}
+              </div>
+            )}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {cards.map(({ label, value }) => (
                 <div key={label} className="rounded-lg border bg-card p-4">
@@ -58,7 +70,9 @@ export default function Home() {
                 </div>
               ))}
               {!data && !error && cards.length === 0 && (
-                <div className="col-span-full py-8 text-center text-muted-foreground">Loading dashboard...</div>
+                <div className="col-span-full py-8 text-center text-muted-foreground">
+                  Loading dashboard...
+                </div>
               )}
             </div>
           </div>

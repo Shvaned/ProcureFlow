@@ -7,7 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { apiClient } from "@/services/api-client";
 
-interface ApiProduct { id: string; sku: string; name: string; cost_price: number; selling_price: number; is_active: boolean; brand?: { name: string } | null; category?: { name: string } | null; }
+interface ApiProduct {
+  id: string;
+  sku: string;
+  name: string;
+  cost_price: number;
+  selling_price: number;
+  is_active: boolean;
+  brand?: { name: string } | null;
+  category?: { name: string } | null;
+}
 
 export default function ProductsPage() {
   const [search, setSearch] = useState("");
@@ -15,7 +24,8 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    apiClient.get<{ data: { items: ApiProduct[] } }>("/api/v1/products", { page: "1", page_size: "50" })
+    apiClient
+      .get<{ data: { items: ApiProduct[] } }>("/api/v1/products", { page: "1", page_size: "50" })
       .then((r) => setProducts(r.data?.items || []))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -88,9 +98,13 @@ export default function ProductsPage() {
                       <td className="py-3 text-right">₹{p.cost_price?.toLocaleString()}</td>
                       <td className="py-3 text-right">₹{p.selling_price?.toLocaleString()}</td>
                       <td className="py-3">
-                        <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
-                          p.is_active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
-                        }`}>
+                        <span
+                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
+                            p.is_active
+                              ? "bg-success/10 text-success"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                        >
                           {p.is_active ? "Active" : "Inactive"}
                         </span>
                       </td>
