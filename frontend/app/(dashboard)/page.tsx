@@ -165,7 +165,7 @@ export default function ExecutiveDashboard() {
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{aiSummary}</p>
               </div>
             ) : (
-              <div className="py-8 text-center text-muted-foreground text-sm">Click "Regenerate" to load AI summary</div>
+              <div className="py-8 text-center text-muted-foreground text-sm">Click &quot;Regenerate&quot; to load AI summary</div>
             )}
           </CardContent>
         </Card>
