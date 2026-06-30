@@ -71,9 +71,9 @@ class OpenRouterProvider:
         content = response["choices"][0]["message"]["content"]
         try:
             return json.loads(content)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as err:
             logger.error("Failed to parse AI response as JSON", extra={"content": content[:500]})
-            raise ValueError("AI response was not valid JSON")
+            raise ValueError("AI response was not valid JSON") from err
 
     async def complete_streaming(
         self,
